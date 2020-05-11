@@ -8,7 +8,7 @@ import { GameContext } from './GameContext';
 import Home from './Home';
 import Game from './Game';
 
-function App(props) {
+const App = () => {
   const { numCookies, setNumCookies, cookiesPerSecond } = React.useContext(
     GameContext
   );

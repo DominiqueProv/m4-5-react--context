@@ -1,11 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
 import items from '../data';
 import useDocumentTitle from '../hooks/use-document-title.hook';
 import useKeydown from '../hooks/use-keydown.hook';
-
 import cookieSrc from '../cookie.svg';
 import Item from './Item';
 import { GameContext } from './GameContext';
@@ -16,7 +14,7 @@ const Game = () => {
     setNumCookies,
     purchasedItems,
     setPurchasedItems,
-    cookiesPerSecond
+    numOfGeneratedCookies
   } = React.useContext(GameContext);
 
   useDocumentTitle({
@@ -33,7 +31,7 @@ const Game = () => {
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{cookiesPerSecond}</strong> cookies per second
+          <strong>{numOfGeneratedCookies}</strong> cookies per second
         </Indicator>
         <Button onClick={incrementCookies}>
           <Cookie src={cookieSrc} />

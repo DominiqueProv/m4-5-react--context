@@ -108,10 +108,15 @@ Context is **global state** for your React tree.
 First, we create a Context, and make it available to the React tree with `<Context.Provider>`:
 
 ```js
+
+// Needed at the to of the component
 export const UserContext = React.createContext(null);
 
 const App = () => {
   return (
+
+    //"UserContext" is the name I give it - .Provider tell React it's global accessible 
+    // value is the props to be passed
     <UserContext.Provider value={{ username: 'Alfalfa' }}>
       <Header />
       <Main>
@@ -149,30 +154,39 @@ Update the following components to use context
 ---
 
 ```jsx
+
+export const UserContext = React.createContext(null);
+
 const App = () => {
-  const [user, setUser] = React.useState({ username: 'Alfalfa' });
 
-  return <Home user={user} setUser={setUser} />;
-};
+  const [user, setUser] = React.useState ({ username= 'Alphalfa'})
+  
+  return (
+  <UserContext.Provider value={{ user, setUser}}>
+   <Home/>
+  </UserContext.Provider>
+  
+}
 
-const Home = ({ user, setUser }) => {
+const Home = () => {
   return (
     <>
-      <Header user={user} setUser={setUser} />
+      <Header />
       <MainContent />
     </>
-  );
-};
+  )
+}
 
-const Header = ({ user, setUser }) => {
+const Header = () => {
   return (
     <header>
-      <Navigation user={user} setUser={setUser} />
+      <Navigation />
     </header>
   );
 };
 
-const Navigation = ({ user, setUser }) => {
+const Navigation = ({ UserContext }) => {
+  const { user, setUser} = useContext(UserContext);
   return (
     <nav>
       <ul>
@@ -196,18 +210,24 @@ const Navigation = ({ user, setUser }) => {
 ---
 
 ```jsx
+
+export const AnotherContext = React.createContext(null);
+
 const App = () => {
   const [dialog, setDialog] = React.useState(null);
 
   return (
     <>
-      <MainContent dialog={dialog} setDialog={setDialog} />
-      <Dialog currentDialog={dialog} />
+      <AnotherContext.Provider value = {{dialog, setDialog}}>
+      <MainContent />
+      <Dialog />
+      </AnotherContext.Provider>
     </>
   );
 };
 
-const MainContent = ({ dialog, setDialog }) => {
+const MainContent = () => {
+  const { setDialog } = useContext(AnotherContext).dialog
   return (
     <>
       <Sidebar>
@@ -220,7 +240,14 @@ const MainContent = ({ dialog, setDialog }) => {
   );
 };
 
+
+//====== new file
+
+import React, {useContext} from 'react';
+import {AnotherCOntext} from './App'
+
 const Dialog = ({ currentDialog }) => {
+  const currentDialog = useContext(AbotherContext).dialog;
   if (!currentDialog) {
     return null;
   }
